@@ -1,19 +1,22 @@
 import ipaddress
 from utils.exceptions import InvalidIPError, InvalidIPRangeError , InvalidPortError
+from utils.target_resolver import generate_ip_range
 
 def validator_ip(address : str) -> ipaddress.IPv4Address | ipaddress.IPv6Address:  
     try:        
-        ip = ipaddress.ip_address(address)  
+        ip = ipaddress.ip_address(address) 
+        return ip 
     except ValueError:
         raise InvalidIPError(f'IP : {address} invalida ')
 
 def validator_ip_network(address : str)-> ipaddress.IPv4Address | ipaddress.IPv6Address: 
     try:
         ip = ipaddress.ip_network(address, strict=False)
+        generate_ip_range(ip)
     except ValueError:
         raise InvalidIPRangeError(f'Rango : {address} es invalido')
 
-def validator_target(address : str)-> ipaddress.IPv4Address | ipaddress.IPv6Address: 
+def validator_ip_target(address : str)-> ipaddress.IPv4Address | ipaddress.IPv6Address: 
     if '/' in address:
         return validator_ip_network(address)
     else:
