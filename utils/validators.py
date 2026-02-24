@@ -1,3 +1,4 @@
+from cgi import print_arguments
 import ipaddress
 from utils.exceptions import InvalidIPError, InvalidIPRangeError , InvalidPortError
 from utils.target_resolver import generate_ip_range
@@ -26,17 +27,20 @@ def validator_port(port : int):
     if not 1 <= port <= 65535:
         raise InvalidPortError(f'Puerto : {port} invalido')
     else:
-        print(f'Puerto : {port} valido')
+        return port
 
 
-# recibir una lista [....] y llamar a las funciones correspondientes
 def validator_port_target(ports:list):
+    list_ports = []
     for item in ports:
         if isinstance(item , int):
-            validator_port(item)
+            port_unique = validator_port(item)
+            list_ports.append(port_unique)
         elif isinstance(item , list):
             for port in range(item[0],item[1]+1):
-                validator_port(port)
+                port_range = validator_port(port)
+                list_ports.append(port_range)
+    return list_ports
 
             
                 
