@@ -1,6 +1,6 @@
 from cgi import print_arguments
 import ipaddress
-from utils.exceptions import InvalidIPError, InvalidIPRangeError , InvalidPortError
+from utils.exceptions import InvalidIPError, InvalidIPRangeError , InvalidPortError , InvalidPortRangeError
 from utils.target_resolver import generate_ip_range
 
 def validator_ip(address : str) -> ipaddress.IPv4Address | ipaddress.IPv6Address:  
@@ -37,9 +37,13 @@ def validator_port_target(ports:list):
             port_unique = validator_port(item)
             list_ports.append(port_unique)
         elif isinstance(item , list):
-            for port in range(item[0],item[1]+1):
-                port_range = validator_port(port)
-                list_ports.append(port_range)
+            if len(item) == 2 and (item[0] < item[1]):
+                for port in range(item[0],item[1]+1):
+                    port_range = validator_port(port)
+                    list_ports.append(port_range)
+            else :
+                raise InvalidPortRangeError(f'Rango de puertos invalido')
+            
     return list_ports
 
             

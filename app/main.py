@@ -11,7 +11,7 @@ def main():
         logger.warning('scan warning')
         validator_ip_target("192.2.2.0/24")
 
-        data =  validator_port_target(DEFAULT_PORT_RANGE)
+        data =  validator_port_target([10,11,[22,12]])
         print(data)
     except ScannerError as e:
         print(f"[ERROR] {e}")
