@@ -2,7 +2,7 @@ from utils.validators import validator_port_target, validator_ip_target
 from utils.exceptions import ScannerError
 from config.settings import DEFAULT_PORT_RANGE , INFO_LVL , DEBUG_LVL, WARNING_LVL, ERROR_LVL
 from utils.logger import setup_logger
-
+from core.models import PortStatus, PortScanResult, HostScanResult , ScanType
 def main():
     print("Inicio del programa")
     try:
@@ -17,6 +17,15 @@ def main():
         logger = setup_logger(ERROR_LVL)
         logger.error('',extra={'cause' : 'Timeout exceeded' , 'failed' : '10.23.232.2:100'})
         
+        portstatus = PortStatus("OPEN")
+        scantype = ScanType("tcp connect")
+
+        portscanresult = PortScanResult(ip="10.23.232.2", port=22,status= portstatus,scan_type=scantype,banner=None,durations_ms=1.232)
+        hostscanresult = HostScanResult(ip="10.23.232.2",port_result= [portscanresult],total_duration_ms= 2.323)
+
+        print(hostscanresult.open_port())
+        print(hostscanresult.summary())
+
     except ScannerError as e:
         print(f"[ERROR] {e}")
         return

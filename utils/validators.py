@@ -1,4 +1,3 @@
-from cgi import print_arguments
 import ipaddress
 from utils.exceptions import InvalidIPError, InvalidIPRangeError , InvalidPortError , InvalidPortRangeError
 from utils.target_resolver import generate_ip_range
