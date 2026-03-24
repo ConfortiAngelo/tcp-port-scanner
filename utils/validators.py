@@ -13,7 +13,7 @@ def validator_ip_network(address : str)-> ipaddress.IPv4Address | ipaddress.IPv6
     try:
         ip = ipaddress.ip_network(address, strict=False)
         range_ip = generate_ip_range(ip)
-        print(range_ip)
+        return range_ip
     except ValueError:
         raise InvalidIPRangeError(f'Rango : {address} es invalido')
 

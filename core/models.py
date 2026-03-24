@@ -13,8 +13,7 @@ class ScanType(Enum):
 
 @dataclass
 class PortScanResult:
-    #ip : IPv4Address | IPv6Address
-    ip : str
+    ip : IPv4Address | IPv6Address
     port : int
     status : PortStatus
     scan_type : ScanType
@@ -23,8 +22,7 @@ class PortScanResult:
 
 @dataclass
 class HostScanResult:
-    #ip : IPv4Address | IPv6Address
-    ip : str
+    ip : IPv4Address | IPv6Address
     port_result : list[PortScanResult] = field(default_factory = list)
     total_duration_ms : float | None = None
 
