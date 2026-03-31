@@ -3,6 +3,10 @@ from utils.exceptions import ScannerError
 from config.settings import DEFAULT_PORT_RANGE , INFO_LVL , DEBUG_LVL, WARNING_LVL, ERROR_LVL
 from utils.logger import setup_logger
 from core.models import PortStatus, PortScanResult, HostScanResult , ScanType
+from infrastructure.scoket_client import connection
+
+import asyncio
+
 def main():
     print("Inicio del programa")
     try:
@@ -21,11 +25,13 @@ def main():
         scantype = ScanType("tcp connect")
 
         portscanresult = PortScanResult(ip="10.23.232.2", port=22,status= portstatus,scan_type=scantype,banner=None,durations_ms=1.232)
-        hostscanresult = HostScanResult(ip="10.23.232.2",port_result= [portscanresult],total_duration_ms= 2.323)
+        hostscanresult = HostScanResult(ip="10.23.232.2",port_result= [portscanresult],total_duration_ms= 2.323)    
 
         print(hostscanresult.open_port())
         print(hostscanresult.summary())
 
+        print('--'*20)
+        asyncio.run(connection('192.168.56.101',22,2))
     except ScannerError as e:
         print(f"[ERROR] {e}")
         return
