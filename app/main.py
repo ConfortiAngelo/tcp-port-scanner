@@ -1,4 +1,5 @@
-from utils.validators import validator_port_target, validator_ip_target
+from utils.validators import  validator_ip_target
+from core.ports import validator_port_target
 from utils.exceptions import ScannerError
 from config.settings import DEFAULT_PORT_RANGE , INFO_LVL , DEBUG_LVL, WARNING_LVL, ERROR_LVL
 from utils.logger import setup_logger
@@ -12,6 +13,7 @@ def main():
     try:
         data_ip = validator_ip_target("192.2.2.0/24")
         data_port =  validator_port_target([10,11,[22,30]])
+        print(f'Probando : {data_port} , {data_ip}')
         #print(f'IP : {data_ip} \nPorts :< \n{data_port}')
         logger = setup_logger(INFO_LVL)  
         logger.info('scan started ->',extra={'ip_target' : "10.23.232.2" , 'port_target' : "100" , 'threads' : 100})
