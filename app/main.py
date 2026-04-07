@@ -31,7 +31,9 @@ def main():
         print(hostscanresult.summary())
 
         print('--'*20)
-        asyncio.run(connection('192.168.56.101',22,2))
+        #asyncio.run(connection('192.168.56.101',22,2))
+        print(asyncio.run(connection('192.168.56.101',9999,2)))
+
     except ScannerError as e:
         print(f"[ERROR] {e}")
         return

@@ -5,7 +5,7 @@ from ipaddress import IPv4Address , IPv6Address
 class PortStatus(Enum):
     OPEN = 'OPEN'
     CLOSED = 'CLOSED'
-    FILTERED = 'FILTERED'
+    FILTERED = 'FILTERED'           
 
 class ScanType(Enum):
     TCP_CONNECT = 'tcp connect'
