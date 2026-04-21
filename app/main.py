@@ -5,16 +5,16 @@ from config.settings import DEFAULT_PORT_RANGE , INFO_LVL , DEBUG_LVL, WARNING_L
 from utils.logger import setup_logger
 from core.models import PortStatus, PortScanResult, HostScanResult , ScanType
 from infrastructure.scoket_client import connection
+from infrastructure.async_executor import async_executor
 
 import asyncio
 
 def main():
     print("Inicio del programa")
     try:
-        data_ip = validator_ip_target("192.2.2.0/24")
+        data_ip = validator_ip_target("192.2.2.0/29")
         data_port =  validator_port_target([10,11,[22,30]])
-        print(f'Probando : {data_port} , {data_ip}')
-        #print(f'IP : {data_ip} \nPorts :< \n{data_port}')
+        print(f'IP : {data_ip} \nPorts :< \n{data_port}')
         logger = setup_logger(INFO_LVL)  
         logger.info('scan started ->',extra={'ip_target' : "10.23.232.2" , 'port_target' : "100" , 'threads' : 100})
         logger = setup_logger(DEBUG_LVL)
@@ -33,9 +33,9 @@ def main():
         print(hostscanresult.summary())
 
         print('--'*20)
-        #asyncio.run(connection('192.168.56.101',22,2))
-        print(asyncio.run(connection('192.168.56.101',9999,2)))
-
+        print(asyncio.run(connection('192.168.56.101',50,2)))
+        print('--'*20)
+        print(asyncio.run(async_executor(data_ip,[1,22])))
     except ScannerError as e:
         print(f"[ERROR] {e}")
         return

@@ -1,6 +1,6 @@
 import ipaddress
 from utils.exceptions import InvalidIPError, InvalidIPRangeError
-from utils.target_resolver import generate_ip_range
+from utils.target_resolved import generate_ip_range
 
 def validator_ip(address : str) -> ipaddress.IPv4Address | ipaddress.IPv6Address:  
     try:        
