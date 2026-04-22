@@ -6,7 +6,7 @@ from utils.logger import setup_logger
 from core.models import PortStatus, PortScanResult, HostScanResult , ScanType
 from infrastructure.scoket_client import connection
 from infrastructure.async_executor import async_executor
-
+from core.scanner import scanner
 import asyncio
 
 def main():
@@ -33,9 +33,11 @@ def main():
         print(hostscanresult.summary())
 
         print('--'*20)
-        print(asyncio.run(connection('192.168.56.101',50,2)))
+ #       print(asyncio.run(connection('192.168.56.101',50,2)))
         print('--'*20)
-        print(asyncio.run(async_executor(data_ip,[1,22])))
+#        print(asyncio.run(async_executor(data_ip,[1,22])))
+        print('--'*20)
+        print(scanner(data_ip,[1,22]))
     except ScannerError as e:
         print(f"[ERROR] {e}")
         return
