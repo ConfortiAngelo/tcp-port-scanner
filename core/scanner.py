@@ -16,4 +16,5 @@ def scanner(targets : list ,ports : list) -> list[HostScanResult]:
         logger = setup_logger(ERROR_LVL)
         logger.error('',extra={'cause' : 'RuntimeError' , 'failed' : 'Timeout'})
     
+
     return hostscanresult

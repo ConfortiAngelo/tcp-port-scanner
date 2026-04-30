@@ -26,12 +26,30 @@ class HostScanResult:
     port_result : list[PortScanResult] = field(default_factory = list)
     total_duration_ms : float | None = None
 
-    def open_port(self):
-        return [r for r in self.port_result if r.status == PortStatus.OPEN]
+    def open(self):
+        open_port = []
+        for r in self.port_result:
+            if r.status == PortStatus.OPEN:
+                open_port.append(r.port)
+        return open_port
+    def filtered(self):
+        filtered_ports = []
+        for r in self.port_result:
+            if r.status == PortStatus.FILTERED:
+                filtered_ports.append(r.port)
+        return filtered_ports
+    
+    def closed(self):
+        closed_ports = []
+        for r in self.port_result:
+            if r.status == PortStatus.CLOSED:
+                closed_ports.append(r.port)
+        return closed_ports
     
     def summary(self):
         return {
             "open" : sum(1 for r in self.port_result if r.status == PortStatus.OPEN),
             "closed" : sum(1 for r in self.port_result if r.status == PortStatus.CLOSED),
             "filtered" : sum(1 for r in self.port_result if r.status == PortStatus.FILTERED)
-        }   
+        }  
+    

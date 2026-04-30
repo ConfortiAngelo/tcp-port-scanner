@@ -8,6 +8,7 @@ from infrastructure.scoket_client import connection
 from infrastructure.async_executor import async_executor
 from core.scanner import scanner
 import asyncio
+from utils.output import host_summary, render_ports_table , render_header , render_scan_info , final_host_summary , render_host_reuslt
 
 def main():
     print("Inicio del programa")
@@ -29,15 +30,21 @@ def main():
         portscanresult = PortScanResult(ip="10.23.232.2", port=22,status= portstatus,scan_type=scantype,banner=None,durations_ms=1.232)
         hostscanresult = HostScanResult(ip="10.23.232.2",port_result= [portscanresult],total_duration_ms= 2.323)    
 
-        print(hostscanresult.open_port())
-        print(hostscanresult.summary())
 
         print('--'*20)
  #       print(asyncio.run(connection('192.168.56.101',50,2)))
         print('--'*20)
 #        print(asyncio.run(async_executor(data_ip,[1,22])))
         print('--'*20)
-        print(scanner(data_ip,[1,22]))
+        scanners = scanner(data_ip,[1,22,443,8080,80,21])
+        print(scanners)
+        print('--'*20)
+        #render_header(scanners)
+        #render_scan_info(scanners)
+        #render_ports_table(scanners)
+        #host_summary(scanners)
+        #final_host_summary(scanners)
+        render_host_reuslt(scanners)
     except ScannerError as e:
         print(f"[ERROR] {e}")
         return
