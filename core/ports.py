@@ -1,5 +1,20 @@
 from utils.exceptions import InvalidPortError, InvalidPortRangeError
 
+def convert_port(ports : list):
+    ports_converts = []
+    for item in ports:
+        if item.isdigit():
+            ports_converts.append(int(item))
+        elif item.startswith('[') and item.endswith(']'):
+            try:
+                start,end = item[1:-1].split(',')
+                ports_converts.append([int(start),int(end)])
+            except:
+                raise ValueError(f'Formato invalido : {item}')
+        else:
+            raise ValueError(f"Entrada no válida: {item}")
+    return ports_converts
+
 def validator_port(port : int):
     if not 1 <= port <= 65535:
         raise InvalidPortError(f'Puerto : {port} invalido')
