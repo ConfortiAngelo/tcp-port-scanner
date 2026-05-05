@@ -17,17 +17,11 @@ def validator_ip_network(address : str)-> ipaddress.IPv4Address | ipaddress.IPv6
     except ValueError:
         raise InvalidIPRangeError(f'Rango : {address} es invalido')
 
-def validator_ip_target(address : str)-> ipaddress.IPv4Address | ipaddress.IPv6Address: 
-    if '/' in address:
-        return validator_ip_network(address)
-    else:
-        return validator_ip(address)
-
-
-            
-                
-
-
-            
-
-    
+def validator_ip_target(address : list)-> ipaddress.IPv4Address | ipaddress.IPv6Address: 
+    validator = []
+    for item in address:
+        if '/' in item:
+            validator.append(validator_ip_network(item))
+        else:
+            validator.append(validator_ip(item))
+    return validator
