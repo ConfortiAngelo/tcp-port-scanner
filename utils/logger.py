@@ -8,15 +8,17 @@ class MyFormatter(logging.Formatter):
         if record.levelno == logging.INFO:
             record.ip_target = getattr(record, 'ip_target', '')
             record.port_target = getattr(record,'port_target', '')
-            record.threads = getattr(record, 'threads','')
-            self._style._fmt = "%(asctime)s - %(levelname)s - %(name)s - %(message)s  ip target : %(ip_target)s - port target : %(port_target)s - threads %(threads)s"
+            
+            self._style._fmt = "%(asctime)s - %(levelname)s - %(name)s - %(message)s  ip target : %(ip_target)s - port target : %(port_target)s"
             return super().format(record)
         elif record.levelno == logging.DEBUG:
             record.action = getattr(record, 'action', '')
             record.ip_port = getattr(record,'ip_port','')
+            record.state = getattr(record,'state','') # fijarse 
+            record.service = getattr(record,'service',None)
             # eliminar cuando se calcule automaticamente
-            record.timeout = getattr(record,'timeout','')  
-            self._style._fmt = '%(levelname)s - %(action)s -> %(ip_port)s - %(timeout)s '
+            
+            self._style._fmt = '%(asctime)s - %(levelname)s - %(action)s -> IP:Port %(ip_port)s - State : %(state)s - Service : %(service)s'
             return super().format(record)
         elif record.levelno == logging.ERROR:
             record.cause = getattr(record,'cause','')

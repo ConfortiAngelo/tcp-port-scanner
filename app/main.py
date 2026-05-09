@@ -1,55 +1,39 @@
-from utils.validators import  validator_ip_target
-from core.ports import validator_port_target
-from utils.exceptions import ScannerError
-from config.settings import DEFAULT_PORT_RANGE , INFO_LVL , DEBUG_LVL, WARNING_LVL, ERROR_LVL
-from utils.logger import setup_logger
-from core.models import PortStatus, PortScanResult, HostScanResult , ScanType
-from infrastructure.scoket_client import connection
-from infrastructure.async_executor import async_executor
+import argparse
+from config.settings import DEFAULT_PORT_RANGE,INFO_LVL
+from core.ports import validator_port_target , convert_port
+from utils.validators import validator_ip_target
 from core.scanner import scanner
-import asyncio
-from utils.output import host_summary, render_ports_table , render_header , render_scan_info , final_host_summary , render_host_reuslt
+from utils.output import render_host_result
+
 
 def main():
-    print("Inicio del programa")
-    try:
-        data_ip = validator_ip_target("192.2.2.0/29")
-        data_port =  validator_port_target([10,11,[22,30]])
-        print(f'IP : {data_ip} \nPorts :< \n{data_port}')
-        logger = setup_logger(INFO_LVL)  
-        logger.info('scan started ->',extra={'ip_target' : "10.23.232.2" , 'port_target' : "100" , 'threads' : 100})
-        logger = setup_logger(DEBUG_LVL)
-        logger.debug('',extra={'action' : 'Create socket' , 'ip_port' : "10.23.232.2:100", "timeout" : '1s'})
-        logger.debug('',extra={'action' : "Thread-12 starting"})
-        logger = setup_logger(ERROR_LVL)
-        logger.error('',extra={'cause' : 'Timeout exceeded' , 'failed' : '10.23.232.2:100'})
-        
-        portstatus = PortStatus("OPEN")
-        scantype = ScanType("tcp connect")
+    #Parsear datos
+    parser = argparse.ArgumentParser(prog='scanner',description='TCP port scan',epilog='scanner -t 192.0.0.2 -p 80')
+    parser.add_argument('-t','--target',nargs='+',type=str,required=True,help='IPs destino')
+    parser.add_argument('-p','--port',nargs='+',type=str,help='Puerto/s a escanear. -p 22 80 443',default=None)
+    args = parser.parse_args()
 
-        portscanresult = PortScanResult(ip="10.23.232.2", port=22,status= portstatus,scan_type=scantype,banner=None,durations_ms=1.232)
-        hostscanresult = HostScanResult(ip="10.23.232.2",port_result= [portscanresult],total_duration_ms= 2.323)    
+    #Validaciones de datos
+    ports = validator_port_target(convert_port(args.port if args.port is not None else DEFAULT_PORT_RANGE.copy()))
+    targets = validator_ip_target(args.target)
+    
+    #BORRAR
+    print(f'targets : {targets}\n' f'ports : {ports}')
+    target_list = []
+    for target in targets:
+        if isinstance(target,list):
+            for ip in target:
+                target_list.append(ip)
+        else:
+            target_list.append(target)
 
+    #Inicio de scaneo
+    scanners = scanner(target_list,ports)
+    print(scanners)
 
-        print('--'*20)
- #       print(asyncio.run(connection('192.168.56.101',50,2)))
-        print('--'*20)
-#        print(asyncio.run(async_executor(data_ip,[1,22])))
-        print('--'*20)
-        scanners = scanner(data_ip,[1,22,443,8080,80,21])
-        print(scanners)
-        print('--'*20)
-        #render_header(scanners)
-        #render_scan_info(scanners)
-        #render_ports_table(scanners)
-        #host_summary(scanners)
-        #final_host_summary(scanners)
-        render_host_reuslt(scanners)
-    except ScannerError as e:
-        print(f"[ERROR] {e}")
-        return
+    #Mostrar datos al Usuario
+    #render_host_result(scanners)
 
-    print("Fin del programa")
 
 if __name__ == "__main__":
     main()

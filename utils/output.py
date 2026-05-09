@@ -56,7 +56,7 @@ def final_host_summary(target,hosts) -> None:
     f'Scan duration : {target.total_duration_ms}\n'
     f'[✔] Scan completed successfully')
 
-def render_host_reuslt(hostscanresult) -> None:
+def render_host_result(hostscanresult) -> None:
     
     
     for target in (hostscanresult):
