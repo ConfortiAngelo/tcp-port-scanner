@@ -5,17 +5,21 @@ def _detected_from_banner(banner):
             return service
     return None
 
-def get_service(port : str, banner : str | None) -> tuple[str:bool]:
-    if banner:
-        detected = _detected_from_banner(banner)
-        if detected:
-            return detected,True
+def get_service(port: int, banner: str | None) -> tuple[str, str | bool]:
+    banner_received = banner
+    print(f'banner : {banner}')  
+
+    if banner_received:
+        service_from_banner = _detected_from_banner(banner)
+        if service_from_banner:
+            return service_from_banner, True  
 
     if port in COMMON_PORTS:
-        return COMMON_PORTS[port],False
-    return 'unknown', False
+        return COMMON_PORTS[port], banner_received  
 
-#PORTS
+    return 'unknown', banner_received
+
+#PORTSSSH-2.0-OpenSSH_8.4
 COMMON_PORTS = {
     #Infraestructura básica
     20: "ftp-data",
@@ -138,8 +142,7 @@ COMMON_PORTS = {
     25565: "minecraft",
     19132: "minecraft-bedrock"
 }
-
-                                                                                                                                                                 
+                                                                                                                                               
 BANNER_PATTERNS: list[tuple[re.Pattern, str]] = [
     # 🔸 Infraestructura básica
     (re.compile(r"^SSH-\d+\.\d+-",                  re.IGNORECASE), "ssh"),

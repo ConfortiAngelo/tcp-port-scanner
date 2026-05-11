@@ -18,7 +18,7 @@ def main():
     targets = validator_ip_target(args.target)
     
     #BORRAR
-    print(f'targets : {targets}\n' f'ports : {ports}')
+
     target_list = []
     for target in targets:
         if isinstance(target,list):
@@ -29,8 +29,6 @@ def main():
 
     #Inicio de scaneo
     scanners = scanner(target_list,ports)
-    print('--'*40)
-    print(f'SCANNER :\n{scanners}')
 
     #Mostrar datos al Usuario
     render_host_result(scanners)

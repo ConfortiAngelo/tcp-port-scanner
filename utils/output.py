@@ -39,7 +39,8 @@ def render_ports_table(target) -> None:
         table.add_row(
             f"{result.port}/tcp",
             f"[{state_color}]{result.status.name}[/{state_color}]",
-            f"{service}{' (banner)' if detected else ''}"
+            f"{detected if service == 'unknown' else service}"
+
         )
 
     console.print(table)
