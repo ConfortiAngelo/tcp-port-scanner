@@ -14,7 +14,7 @@ def main():
     args = parser.parse_args()
 
     #Validaciones de datos
-    ports = validator_port_target(convert_port(args.port if args.port is not None else DEFAULT_PORT_RANGE.copy()))
+    ports = validator_port_target(convert_port(args.port if args.port is not None else str(DEFAULT_PORT_RANGE.copy())))
     targets = validator_ip_target(args.target)
     
     #BORRAR
@@ -29,10 +29,11 @@ def main():
 
     #Inicio de scaneo
     scanners = scanner(target_list,ports)
-    print(scanners)
+    print('--'*40)
+    print(f'SCANNER :\n{scanners}')
 
     #Mostrar datos al Usuario
-    #render_host_result(scanners)
+    render_host_result(scanners)
 
 
 if __name__ == "__main__":

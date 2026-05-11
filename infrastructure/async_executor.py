@@ -24,7 +24,6 @@ async def async_executor(ips : list ,ports : list) -> list[HostScanResult]:
                     task = tg.create_task(executor(ip_str,port,limited))
                     tasks.append(task)
             ports_results = [task.result() for task in tasks]
-            print(f'port reuslt : {ports_results}')
         except* OSError as eg:
             logger = setup_logger(ERROR_LVL)
             logger.error('',extra={'cause' : 'Network Error' , 'failed' : {ip_str}})
@@ -32,7 +31,7 @@ async def async_executor(ips : list ,ports : list) -> list[HostScanResult]:
         
         total_duration_ms = (loop.time() - start_time)*1000
         hosts_results.append(HostScanResult(ip_str, ports_results, total_duration_ms))    
-        print(f'HOSTS : {hosts_results}')
+        
     return hosts_results
 
 

@@ -57,8 +57,6 @@ def final_host_summary(target,hosts) -> None:
     f'[✔] Scan completed successfully')
 
 def render_host_result(hostscanresult) -> None:
-    
-    
     for target in (hostscanresult):
         console.rule()
         hosts = len(hostscanresult)

@@ -14,7 +14,6 @@ async def connection(ip,port ,timeout):
             banner = banner.decode(errors="ignore").rstrip("\r\n")
         except asyncio.TimeoutError:
             banner = ''
-        print(f'IP 2: {ip}\n')
         writer.close()
         await writer.wait_closed()
         end_time = loop.time()
@@ -25,9 +24,7 @@ async def connection(ip,port ,timeout):
         end_time = loop.time()
         logger.debug('Iniciando conexion TCP ->',extra={'action' : 'Create socket' , 'ip_port' : f'{ip}:{str(port)}','state' :f'Closed', 'service' : f'ssh'})
         durations_ms = (end_time - start_time) * 1000 
-        portscanresult = PortScanResult
-        (ip,port,PortStatus.CLOSED,ScanType.TCP_CONNECT,"",durations_ms)
-        
+        portscanresult = PortScanResult(ip,port,PortStatus.CLOSED,ScanType.TCP_CONNECT,"",durations_ms)
         return portscanresult
 
     except asyncio.TimeoutError:
@@ -35,5 +32,5 @@ async def connection(ip,port ,timeout):
         durations_ms = (end_time - start_time) * 1000 
         portscanresult = PortScanResult(ip,port,PortStatus.FILTERED,ScanType.TCP_CONNECT,"",durations_ms)
 
-        return portscanresult
+        return portscanresult 
 
