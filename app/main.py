@@ -14,7 +14,7 @@ def main():
     args = parser.parse_args()
 
     #Validaciones de datos
-    ports = validator_port_target(convert_port(args.port if args.port is not None else str(DEFAULT_PORT_RANGE.copy())))
+    ports = validator_port_target(convert_port(args.port if args.port is not None else DEFAULT_PORT_RANGE.copy()))
     targets = validator_ip_target(args.target)
     
     #BORRAR
