@@ -23,6 +23,18 @@ async def connection(ip,port ,timeout):
 
         logger.debug('Iniciando conexion TCP ->',extra={'action' : 'Create socket' , 'ip_port' : f'{ip}:{str(port)}','state' :f'OPEN', 'service' : f'{service}{detected if detected else ''}'})
         return  portscanresult_open
+    
+    except asyncio.TimeoutError:
+        end_time = loop.time()
+        
+        durations_ms = (end_time - start_time) * 1000 
+        portscanresult_filtered = PortScanResult(ip,port,PortStatus.FILTERED,ScanType.TCP_CONNECT,"",durations_ms)
+        service, detected = get_service(portscanresult_filtered.port, portscanresult_filtered.banner)
+        logger.debug('Iniciando conexion TCP ->',extra={'action' : 'Create socket' , 'ip_port' : f'{ip}:{str(port)}','state' :f'Filtered', 'service' : f'{service}{detected if detected else ''}'})
+
+        return portscanresult_filtered
+
+    
     except (ConnectionRefusedError, OSError, ConnectionResetError):
         end_time = loop.time()
         
@@ -34,14 +46,4 @@ async def connection(ip,port ,timeout):
 
         return portscanresult_closed
 
-    except asyncio.TimeoutError:
-        end_time = loop.time()
-        
-        durations_ms = (end_time - start_time) * 1000 
-        portscanresult_filtered = PortScanResult(ip,port,PortStatus.FILTERED,ScanType.TCP_CONNECT,"",durations_ms)
-        service, detected = get_service(portscanresult_filtered.port, portscanresult_filtered.banner)
-        print(f'SERVICE : {service}   ---- DETECTED : {detected}')
-        logger.debug('Iniciando conexion TCP ->',extra={'action' : 'Create socket' , 'ip_port' : f'{ip}:{str(port)}','state' :f'Filtered', 'service' : f'{service}{detected if detected else ''}'})
-
-        return portscanresult_filtered
-
+    

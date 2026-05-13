@@ -7,7 +7,6 @@ def _detected_from_banner(banner):
 
 def get_service(port: int, banner: str | None) -> tuple[str, str | bool]:
     banner_received = banner
-    print(f'banner : {banner}')  
 
     if banner_received:
         service_from_banner = _detected_from_banner(banner)
