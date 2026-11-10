@@ -1,5 +1,5 @@
 import asyncio
-from infrastructure.scoket_client import connection
+from infrastructure.socket_client import connection
 from core.models import HostScanResult, PortScanResult
 from config.settings import DEFAULT_TASK , DEFAULT_TIMEOUT, ERROR_LVL, DEBUG_LVL
 from utils.logger import setup_logger
