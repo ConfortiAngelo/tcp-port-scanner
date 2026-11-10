@@ -10,11 +10,11 @@ def scanner(targets : list ,ports : list) -> list[HostScanResult]:
     
     logger = setup_logger(INFO_LVL)
     logger.info('scan started ->',extra={'ip_target' : {str(targets)} , 'port_target' : {str(ports)}})
-    try: 
+    try:
         hostscanresult = asyncio.run(async_executor(targets,ports))
     except RuntimeError:
         logger = setup_logger(ERROR_LVL)
         logger.error('',extra={'cause' : 'RuntimeError' , 'failed' : 'Timeout'})
-    
+        hostscanresult = []
 
     return hostscanresult

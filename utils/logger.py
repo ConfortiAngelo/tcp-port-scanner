@@ -41,6 +41,7 @@ def setup_logger(level):
     if (logger.hasHandlers()):
         return logger
 
+    os.makedirs(log_directory, exist_ok=True)
     log_path = os.path.join(log_directory,log_file)
     file_handler = logging.FileHandler(log_path,encoding='utf-8')
 
